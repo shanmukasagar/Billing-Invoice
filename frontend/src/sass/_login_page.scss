@@ -1,0 +1,93 @@
+.user-register-main{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    height : 100vh;
+    .create-account-main{
+        display: flex;
+        justify-content: center;
+        .sub1-account-main{
+            width: 450px;
+            height: 550px;
+            padding: 25px;
+            background-color: #dee6f1;
+            border-radius: 15px;
+            .sub2-account-box{
+                display: flex;
+                flex-direction: column;
+                align-content: center;
+                gap: 25px;
+                .account-top-box{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    width: 100%;
+                    .create-account-title{
+                        font-size: 25px;
+                        font-weight: 600;
+                    }
+                    .content-style{
+                        font-size: 15px;
+                        color: #878080;
+                    }
+                }
+                .text-fields-main{
+                    display: flex;
+                    flex-direction: column;
+                    gap: 20px;
+                    align-items: center;
+                    .text-field-style{
+                        font-size: 17px;
+                        background-color: white;
+                    }
+                    .password-text-field{
+                        background-color: white;
+                        width : 450px;
+                    }
+                    .error-border{
+                        background-color: white;
+                        .css-1ll44ll-MuiOutlinedInput-notchedOutline {
+                            border: 0.5px solid #FF0000;
+                        }
+                    }
+                    .text-field-error{
+                        color : red;
+                        text-align: center;
+                    }
+                    .button-style{
+                        background-color: green;
+                        color: white;
+                        text-transform: initial;
+                        width: 100%;
+                    }
+                    .no-account-text{
+                        font-size : 17px;
+                        .link-style {
+                            color: #1976d2;
+                            text-decoration: none;
+                            cursor: pointer;
+                            &:hover {
+                              text-decoration: underline;
+                            }
+                          }
+                    }
+                    .error-message{
+                        font-size : 17px;
+                        font-weight : 500;
+                        color : red;
+                    }
+                }
+            }
+        }
+    }
+    .alert{
+        height: 40px;
+        min-width : 500px;
+        align-self: flex-end;
+        background-color: green;
+        border-radius: 5px;
+        color: white;
+    }
+}
+

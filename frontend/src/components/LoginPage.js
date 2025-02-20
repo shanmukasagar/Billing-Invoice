@@ -1,83 +1,81 @@
-import React, { useState } from 'react';
-import { TextField, Button, Typography, Tabs, Tab, Box, Paper } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, TextField, Typography, Button } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import {getUserAuthentication, resetAuthDataError} from "../store/actions/userAuthActions";
+import {useNavigate } from "react-router-dom";
+import SignupPage from './SignupPage';
 
-const AuthPage = () => {
-  const [tabIndex, setTabIndex] = useState(0);
-  const [userData, setUserData] = useState({ username: '', password: '', email: '' });
+const CreateAccount = () => {
+    const [userData, setUserData] = useState({email: '', pwd: '' });
+    const [isLoginPage, setIsLoginPage] = useState(true);
+    const [errorMessage, setErrorMessage] = useState(false);
 
-  const handleChange = (e) => {
-    setUserData({ ...userData, [e.target.name]: e.target.value });
-  };
+    const dispatch = useDispatch();
+    const navigate = useNavigate(); // Initialize useNavigate
+    const userLoginResponse = useSelector(state => state.authUserDataReducer.generalError);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const endpoint = tabIndex === 0 ? 'login' : 'signup';
-    
-    const response = await fetch(`http://localhost:5000/api/${endpoint}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData),
-    });
+    useEffect(() => {
+        if(userLoginResponse !== "") {
+            if(userLoginResponse === "success") {
+                navigate("/home");
+            }
+        }
+    },[userLoginResponse])
 
-    const result = await response.json();
-    
-    if (response.ok) {
-      alert(result.message);
-      if (endpoint === 'login') window.location.href = '/create-invoice';
-      setUserData({ username: '', password: '', email: '' });
-    } else {
-      alert(result.error || 'Something went wrong!');
+    const handleTextFieldChange = (e) => {
+        setUserData({ ...userData, [e.target.name]: e.target.value });
+    };
+
+    const handleSignup = () => {
+        setIsLoginPage(false);
+        setErrorMessage(false);
     }
-  };
 
-  return (
-    <Box display="flex" justifyContent="center" alignItems="center" height="100vh" bgcolor="#f4f4f4">
-      <Paper elevation={3} style={{ padding: 30, maxWidth: 400, width: '100%', textAlign: 'center' }}>
-        <Tabs value={tabIndex} onChange={(_, newIndex) => setTabIndex(newIndex)} centered>
-          <Tab label="Login" />
-          <Tab label="Sign Up" />
-        </Tabs>
+    const handleSubmit = () => {
+        dispatch(resetAuthDataError());
+        for(const item of Object.keys(userData)) {
+            if(userData[item] === "") {
+                setErrorMessage(true);
+                return;
+            }
+        }
+        dispatch(getUserAuthentication(userData));
+    }
 
-        <Typography variant="h5" marginTop={2}>
-          {tabIndex === 0 ? 'Login' : 'Sign Up'}
-        </Typography>
+    return (
+        <React.Fragment>
+            {isLoginPage ? (
+                <Box className="user-register-main">
+                    <Box className="create-account-main">
+                        <Box className="sub1-account-main">
+                            <Box className="sub2-account-box">
+                                <Box className="account-top-box">
+                                    <Typography className="create-account-title">Signin to Account</Typography>
+                                    <Typography className="content-style">Enter your email and password to Signin</Typography>
+                                </Box>
+                                <Box className="text-fields-main">
+                                    <TextField required  fullWidth label="Email" name="email" onChange={handleTextFieldChange}
+                                        value={userData.email} className= "text-field-style" />
+                                    <TextField required type = "password" fullWidth label="Password" name="pwd" onChange={handleTextFieldChange}
+                                        value={userData.pwd} className = "text-field-style"/>
+                                    <Button className="button-style" onClick = {handleSubmit}>Sign in</Button>
+                                    <Typography className="no-account-text">Don't have an account? 
+                                        <span className="link-style" onClick={handleSignup}>
+                                            Click here to create a new account
+                                        </span>
+                                    </Typography>
+                                    {errorMessage && <Typography className = "error-message">Please fill required details</Typography>}
+                                    {userLoginResponse && userLoginResponse !== "success" && <Typography className = "error-message">{userLoginResponse}</Typography>}
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Box>
+                </Box>
+            ) :
+                (<SignupPage setIsLoginPage = {setIsLoginPage}/>)
+            }
+        </React.Fragment>
+    );
+}
 
-        <form onSubmit={handleSubmit} style={{ marginTop: 20 }}>
-          {tabIndex === 1 && (
-            <TextField
-              label="Email"
-              name="email"
-              value={userData.email}
-              onChange={handleChange}
-              fullWidth
-              margin="normal"
-            />
-          )}
-          <TextField
-            label="Username"
-            name="username"
-            value={userData.username}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Password"
-            type="password"
-            name="password"
-            value={userData.password}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-
-          <Button type="submit" variant="contained" color="primary" fullWidth style={{ marginTop: 20 }}>
-            {tabIndex === 0 ? 'Login' : 'Sign Up'}
-          </Button>
-        </form>
-      </Paper>
-    </Box>
-  );
-};
-
-export default AuthPage;
+export default CreateAccount;

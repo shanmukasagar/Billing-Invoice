@@ -1,16 +1,20 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import InvoiceForm from './components/InvoiceForm';
-import InvoiceList from './components/InvoiceList';
+import "./sass/_main.scss";
+
+
 import LoginPage from './components/LoginPage';
+import HomePage from './components/Home';
+import CreateInvoice from "./components/CreateInvoice";
+
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route path="/create-invoice" element={<InvoiceForm />} />
-        <Route path="/view-invoices" element={<InvoiceList />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/create-invoice" element={<CreateInvoice />} />
       </Routes>
     </Router>
   );

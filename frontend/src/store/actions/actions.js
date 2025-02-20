@@ -1,0 +1,21 @@
+export const authActions = { //Login actions
+    GET_AUTH_DATA_SUCCESS : "GET_AUTH_DATA_SUCCESS",
+    GET_AUTH_DATA_FAILURE : "GET_AUTH_DATA_FAILURE",
+    RESET_AUTH_DATA_ERROR : "RESET_AUTH_DATA_ERROR"
+}
+
+export const addNewUserActions = { //Signup actions
+    ADD_NEW_USER_SUCCESS : "ADD_NEW_USER_SUCCESS",
+    ADD_NEW_USER_FAILURE : "ADD_NEW_USER_FAILURE",
+    RESET_ADD_NEW_USER_ERROR: "RESET_ADD_NEW_USER_ERROR"
+}
+
+export const getProductActions = { //Get all products
+    GET_PRODUCTS_SUCCESS: "GET_PRODUCTS_SUCCESS",
+    GET_PRODUCTS_FAILURE: "GET_PRODUCTS_FAILURE",
+}
+
+export const getTransactionActions = { //Get all transactions
+    GET_TRANSACTION_SUCCESS: "GET_TRANSACTION_SUCCESS",
+    GET_TRANSACTION_FAILURE: "GET_TRANSACTION_FAILURE",
+}

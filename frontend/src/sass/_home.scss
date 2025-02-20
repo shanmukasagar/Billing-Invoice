@@ -1,0 +1,58 @@
+.home_main{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 40px;
+    .header_main{
+        display: flex;
+        justify-content: space-between;
+        .title{
+            font-size: 25px;
+            font-weight: 600;
+        }
+        .button_style{
+            background-color: green;
+            color: white;
+            text-transform: initial;
+            padding: 10px;
+            font-size: 18px;
+        }
+    }
+    .transaction_text{
+        font-size: 23px;
+        font-weight: 600;
+    }
+    .grid_main{
+        .grid_parent{
+            background-color: green;
+            color: white;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            .key_name{
+                font-size: 18px;
+                &.key_center{
+                    text-align : center;
+                }
+            }
+        }
+        .grid_child{
+            background-color: white;
+            color: black;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border : 1px solid #e3dada;
+            .value_name{
+                font-size: 18px;
+                &.value_center{
+                    text-align : center;
+                }
+            }
+        }
+    }
+}

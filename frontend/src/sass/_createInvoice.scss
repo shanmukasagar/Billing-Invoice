@@ -1,0 +1,63 @@
+.form_main{
+    margin: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    .main_title{
+        font-size: 28px;
+        font-weight: 600;
+    }
+    .text_field_style{
+        .css-1blp12k-MuiInputBase-root-MuiOutlinedInput-root{
+            height: 65px;
+        }
+    }
+    .products_main{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        .product_title{
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .amounts_main{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            .sub_amounts_main{
+                display: flex;
+                gap: 5px;
+                .key_style{
+                    font-size: 20px;
+                    font-weight: 500;
+                }
+                .value_main{
+                    font-size: 22px;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+    .button_main{
+        display: flex;
+        justify-content: center;
+        gap: 100px;
+        padding-top: 20px;
+        .button_style{
+            background-color: green;
+            color: white;
+            width: 200px;
+            padding: 10px;
+            text-transform: initial;
+            font-size: 17px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    }
+    .error-message{
+        text-align: center;
+        font-size : 17px;
+        font-weight : 500;
+        color : red;
+    }
+}
