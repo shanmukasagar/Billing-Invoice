@@ -8,11 +8,15 @@ export const transactionDataSuccess = (response) => {
 export const transactionDataFailure = (error) => {
     let errorMessage = '';
     if (error.response && error.response.data) {
-        errorMessage = error.response.data || error.response.data.error || "Unknown error occurred"; 
+        errorMessage = error.response.data.message || error.response.data.error || "Unknown error occurred"; 
     } else {
         errorMessage = error.message; 
     }
     return { type: getTransactionActions.GET_TRANSACTION_FAILURE, payload: errorMessage}
+};
+
+export const resetTransactionError = () => {
+    return { type: getTransactionActions.RESET_TRANSACTION_AUTHENTICATION};
 };
 
 export const getAllTransactions = () => { //Get all transactions

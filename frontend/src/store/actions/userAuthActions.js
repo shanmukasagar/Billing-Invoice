@@ -1,4 +1,4 @@
-import { authActions, addNewUserActions } from "./actions";
+import { authActions, addNewUserActions, authenticatePageActions } from "./actions";
 import axios from 'axios';
 
 export const authDataSuccess = (response) => {
@@ -8,7 +8,7 @@ export const authDataSuccess = (response) => {
 export const authDataFailure = (error) => {
     let errorMessage = '';
     if (error.response && error.response.data) {
-        errorMessage = error.response.data.message || error.response.data.error || "Unknown error occurred"; 
+        errorMessage = error.response.data.message || error.response.data || "Unknown error occurred"; 
     } else {
         errorMessage = error.message; 
     }
@@ -36,7 +36,7 @@ export const addNewUserSuccess = (response) => {
 export const addNewUserFailure = (error) => {
     let errorMessage = '';
     if (error.response && error.response.data) {
-        errorMessage = error.response.data.message || error.response.data.error || "Unknown error occurred"; 
+        errorMessage = error.response.data.message || error.response.data|| "Unknown error occurred"; 
     } else {
         errorMessage = error.message; 
     }
@@ -56,8 +56,35 @@ export const addNewUser = (newUser) => { //Signup functionality
         })
     }
 }
+// Authentication page
+export const authPageSuccess = (response) => {
+    return { type: authenticatePageActions.GET_AUTHENTICATE_SUCCESS, payload: response}
+};
 
+export const authPageFailure = (error) => {
+    let errorMessage = '';
+    if (error.response && error.response.data) {
+        errorMessage = error.response.data.message || error.response.data || "Unknown error occurred"; 
+    } else {
+        errorMessage = error.message; 
+    }
+    return { type: authenticatePageActions.GET_AUTHENTICATE_FAILURE, payload: errorMessage}
+};
 
+export const resetAuthPageError = () => {
+    return { type: authenticatePageActions.RESET_AUTHENTICATION};
+};
+
+export const authenticationPage = () => { //Login functionality
+    return function(dispatch) {
+        axios.get("http://localhost:6001/api/auth/verify-page", { withCredentials: true }).then(response => {
+            dispatch(authPageSuccess(response.data));
+        })
+        .catch(error => {
+            dispatch(authPageFailure(error))
+        })
+    }
+};
 
 
 

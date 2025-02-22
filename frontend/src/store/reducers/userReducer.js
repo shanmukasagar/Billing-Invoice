@@ -1,10 +1,15 @@
-import { authActions, addNewUserActions } from "../actions/actions";
+import { authActions, addNewUserActions,authenticatePageActions } from "../actions/actions";
 
 const authState = {
     authUser : {},
     generalError : '',
     isAuthenticated : false
 }
+
+const authPageState = {
+    isAuthenticated : false,
+    generalError : ''
+};
 
 export const authUserDataReducer = (state = authState, action) => {
     switch(action.type) {
@@ -55,6 +60,31 @@ export const addNewUserReducer = (state = authState, action) => {
                 authUser:{},
                 isAuthenticated : false,
                 generalError:''
+            }
+        default:
+            return state;
+    }
+}
+//Authenticated page
+export const authPageReducer = (state = authPageState, action) => {
+    switch(action.type) {
+        case authenticatePageActions.GET_AUTHENTICATE_SUCCESS:
+            return {
+                ...state,
+                generalError: "success",
+                isAuthenticated : true,
+            };
+        case authenticatePageActions.GET_AUTHENTICATE_FAILURE:
+            return {
+                ...state,
+                generalError: action.payload,
+                isAuthenticated : false,
+            };
+        case authenticatePageActions.RESET_AUTHENTICATION:
+            return {
+                ...state,
+                isAuthenticated : false,
+                generalError: ''
             }
         default:
             return state;

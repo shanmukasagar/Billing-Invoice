@@ -3,10 +3,12 @@ import { Box, TextField, Typography, Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import {addNewUser, resetAddNewUserError} from "../store/actions/userAuthActions";
 import {useNavigate } from "react-router-dom";
+import {authValidation} from "./ValidateFields"
 
 const SignupPage = ({setIsLoginPage}) => {
     const [userData, setUserData] = useState({ u_nm: '', email: '', pwd: '' });
     const [errorMessage, setErrorMessage] = useState(false);
+    const [error, setError] = useState('');
 
     const dispatch = useDispatch();
     const navigate = useNavigate(); // Initialize useNavigate
@@ -27,16 +29,19 @@ const SignupPage = ({setIsLoginPage}) => {
     const handleLogin = () => {
         setErrorMessage(false);
         setIsLoginPage(true);
+        setError('');
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         dispatch(resetAddNewUserError());
-        for(const item of Object.keys(userData)) {
-            if(userData[item] === "") {
-                setErrorMessage(true);
-                return;
-            }
+        const result = await authValidation(userData);
+        if(result.isError) {
+            setError(result.message);
+            setErrorMessage(true);
+            return;
         }
+        setError('');
+        setErrorMessage(false);
         dispatch(addNewUser(userData));
     }
 
@@ -61,7 +66,7 @@ const SignupPage = ({setIsLoginPage}) => {
                             <Typography className="no-account-text">Already have an account?
                                 <span className="link-style" onClick={handleLogin}>Click here to SignIn</span>
                             </Typography>
-                            {errorMessage && <Typography className = "error-message">Please fill required details</Typography>}
+                            {errorMessage && <Typography className = "error-message">{error}</Typography>}
                             {userSignupResponse && userSignupResponse !== "success" && 
                                 <Typography className = "error-message">{userSignupResponse}</Typography>}
                         </Box>

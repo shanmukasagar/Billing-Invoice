@@ -6,7 +6,6 @@ const createUser = async (userData) => {
     const db = getDB();
     const userCollection = await db.collection("Users");
 
-
     userData.pwd = await bcrypt.hash(userData.pwd, 10);
 
     const user = {

@@ -19,6 +19,11 @@ export const getAllProductsReducer = (state = productsState, action) => {
                 generalError: action.payload,
                 ProductAccounts: {},
             };
+        case getProductActions.RESET_PRODUCTS_AUTHENTICATION:
+            return {
+                ...state,
+                generalError: "",
+            };
         default:
             return state;
     }

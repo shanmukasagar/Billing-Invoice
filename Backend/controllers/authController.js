@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const { createUser, findUserByEmail } = require("../models/User");
 const { generateToken } = require("../utils/jwtUtils");
 const {connectDB, getDB} = require("../config/db");
+const {verifyToken} = require("../utils/jwtUtils")
 
 // create User
 const signup = async (req, res) => {
@@ -61,4 +62,16 @@ const logout = (req, res) => {
   res.status(200).json({ message: "Logged out successfully" });
 };
 
-module.exports = { signup, login, logout };
+const authenticatePage = (req, res) => { // Authenticate page
+  try{
+    const token = req.cookies.token;
+    if (!token) return res.status(401).json({ success : false, message: "Unauthorized" });
+    const decoded = verifyToken(token);
+    res.status(200).json({success : true, message : "success"});
+  }
+  catch(error) {
+    res.status(500).json({success : false, message : "Internal server error"});
+  }
+}
+
+module.exports = { signup, login, logout, authenticatePage };

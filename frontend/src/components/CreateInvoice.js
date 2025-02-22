@@ -3,7 +3,9 @@ import {Box, Typography, Grid, TextField, FormControl, InputLabel, Select, MenuI
 import { useDispatch, useSelector } from 'react-redux';
 import {getAllProducts} from "../store/actions/formActions";
 import {useNavigate } from "react-router-dom";
-import {createOrder, verifyPayment, cashOnPayment} from "./Payment"
+import {createOrder, verifyPayment, cashOnPayment} from "./Payment";
+import {authenticationPage, resetAuthPageError} from "../store/actions/userAuthActions";
+import {validateForm} from "./ValidateFields"
 
 const CreateInvoice = () => {
     const [tnx_type, setTnx_Type] = useState("");
@@ -13,11 +15,13 @@ const CreateInvoice = () => {
         ship_addr : "", remarks : "", bal_amt: "", total_amount : "", inst_amount : ""
 
     });
+    const [error, setError] = useState('');
 
     const fetchOnce = useRef(false);
     const dispatch = useDispatch();
     const navigate = useNavigate(); // Initialize useNavigate
     const productAccounts = useSelector(state => state.getAllProductsReducer.ProductAccounts);
+    const authPageResponse = useSelector(state => state.authPageReducer.generalError);
 
     useEffect(() => { //Payment gateway page
         const script = document.createElement("script");
@@ -52,8 +56,20 @@ const CreateInvoice = () => {
     },[invoiceData.no_units, invoiceData.p_id])
 
     useEffect(() => { //Get all products
+        if(authPageResponse !== "") {
+            if(authPageResponse === "success") {
+                dispatch(getAllProducts());
+            }
+            else{
+                navigate('/');
+                dispatch(resetAuthPageError());
+            }
+        }
+    },[authPageResponse])
+
+    useEffect(() => {
         if(!fetchOnce.current) {
-            dispatch(getAllProducts());
+            dispatch(authenticationPage());
             fetchOnce.current = true;
         }
     },[])
@@ -103,6 +119,7 @@ const CreateInvoice = () => {
 
     const handleCancel = (e) => { //Handle cancel button
         setErrorMessage(false);
+        setError('');
         navigate("/home");
     }
 
@@ -114,7 +131,7 @@ const CreateInvoice = () => {
             });
             if(!order.success) {
                 alert(order.message);
-                navigate('/');
+                navigate('/home');
                 return;
             }
             const options = {
@@ -153,18 +170,14 @@ const CreateInvoice = () => {
 
     const handleSubmit = async() => { //Handle submit
         invoiceData.tnx_type = tnx_type;
-        for(const item of Object.keys(invoiceData)) {
-            if(item === "sup_id" || item === "cus_id") {
-                if(!invoiceData.sup_id && !invoiceData.cus_id) {
-                    setErrorMessage(true);
-                    return;
-                }
-            }
-            else if(!invoiceData[item]) {
-                setErrorMessage(true);
-                return;
-            }
+        const result = validateForm(invoiceData);
+        if(result.isError) {
+            setErrorMessage(true);
+            setError(result.message);
+            return;
         }
+        setErrorMessage(false);
+        setError('');
         if(invoiceData.pay_term === "cod") { 
             const result = await cashOnPayment(invoiceData);
             if(result.success) {
@@ -314,7 +327,7 @@ const CreateInvoice = () => {
                     </Grid>
                 </Box>
             </Box>
-            {errorMessage && <Typography className = "error-message">Please fill required fields</Typography>}
+            {errorMessage && <Typography className = "error-message">{error}</Typography>}
             <Box className = "button_main">
                 <Button className = "button_style" onClick = {handleCancel}>Cancel</Button>
                 <Button className = "button_style" onClick = {handleSubmit}>Create Invoice</Button>

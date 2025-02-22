@@ -19,6 +19,11 @@ export const getTransactionReducer = (state = transactionState, action) => {
                 generalError: action.payload,
                 transactionData: [],
             };
+        case getTransactionActions.RESET_TRANSACTION_AUTHENTICATION:
+            return {
+                ...state,
+                generalError : '',
+            };
         default:
             return state;
     }
