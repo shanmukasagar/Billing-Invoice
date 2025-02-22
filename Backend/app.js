@@ -19,13 +19,13 @@ app.use(
         defaultSrc: ["'self'"],
         scriptSrc: [
           "'self'",
-          "https://checkout.razorpay.com", // ✅ Allow Razorpay scripts
-          "'unsafe-inline'", // ✅ Required for inline scripts
-          "'unsafe-eval'",   // ✅ Required for certain Razorpay functionalities
+          "https://checkout.razorpay.com", //  Allow Razorpay scripts
+          "'unsafe-inline'", //  Required for inline scripts
+          "'unsafe-eval'",   // Required for certain Razorpay functionalities
         ],
-        frameSrc: ["'self'", "https://api.razorpay.com"], // ✅ Allow Razorpay iframe
-        connectSrc: ["'self'", "https://api.razorpay.com"], // ✅ Allow API requests
-        imgSrc: ["'self'", "data:", "https://*.razorpay.com"], // ✅ Allow Razorpay images
+        frameSrc: ["'self'", "https://api.razorpay.com"], //  Allow Razorpay iframe
+        connectSrc: ["'self'", "https://api.razorpay.com"], //  Allow API requests
+        imgSrc: ["'self'", "data:", "https://*.razorpay.com"], //  Allow Razorpay images
       },
     },
   })
